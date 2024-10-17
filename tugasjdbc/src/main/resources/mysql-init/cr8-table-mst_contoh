@@ -1,0 +1,10 @@
+CREATE TABLE `demo`.`mst_contoh`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `contoh_int` int NULL DEFAULT NULL,
+  `contoh_double` double NULL DEFAULT NULL,
+  `contoh_float` float NULL DEFAULT NULL,
+  `contoh_string` char(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `contoh_date` date NULL DEFAULT NULL,
+  `contoh_boolean` tinyint(1) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;

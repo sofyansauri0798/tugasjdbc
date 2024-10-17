@@ -1,0 +1,14 @@
+DROP FUNCTION
+IF
+	EXISTS sp_find_all;
+CREATE
+	OR REPLACE FUNCTION sp_find_all ( c_page INT, c_size INT, c_sort VARCHAR, c_sort_by VARCHAR ) RETURNS SETOF mst_contoh AS $$ BEGIN
+		RETURN QUERY
+	SELECT
+		*
+	FROM
+		mst_contoh
+	ORDER BY
+	id ASC
+	LIMIT c_size OFFSET ( c_page * c_size );
+	END; $$ LANGUAGE 'plpgsql';

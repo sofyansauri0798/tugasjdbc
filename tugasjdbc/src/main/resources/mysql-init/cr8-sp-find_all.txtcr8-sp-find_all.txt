@@ -1,0 +1,38 @@
+DROP PROCEDURE IF EXISTS `sp_find_all`;
+CREATE DEFINER=`root`@`%` PROCEDURE `sp_find_all`(
+c_page INT,
+c_size INT,
+c_sort CHAR(25),
+c_sort_by CHAR(25) )
+BEGIN
+DECLARE code CHAR(5) DEFAULT '00000';
+DECLARE err_no CHAR(5) DEFAULT '00000';
+DECLARE msg TEXT;
+DECLARE currentIndex INT ;
+DECLARE exit handler for SQLEXCEPTION
+ BEGIN
+	GET DIAGNOSTICS CONDITION 1
+        code = RETURNED_SQLSTATE, msg = MESSAGE_TEXT,err_no=MYSQL_ERRNO;
+				 ROLLBACK;
+	INSERT INTO log_error(sql_state,err_msg,err_no,created_by,created_at,trx,fx_name) VALUES (code,msg,err_no,1,CURRENT_TIMESTAMP,'SP','sp_find_all');
+ END;
+
+ SET currentIndex = c_page * c_size;
+
+	SELECT * FROM mst_contoh ORDER BY
+	CASE UPPER(c_sort) WHEN 'ASC' THEN
+			CASE (c_sort_by)
+			WHEN 'contoh_int' THEN contoh_int
+			WHEN 'contoh_double' THEN contoh_double
+			WHEN 'contoh_boolean' THEN contoh_boolean
+			WHEN 'contoh_string' THEN contoh_string
+			ELSE id END END ASC,
+	CASE UPPER(c_sort) WHEN 'DESC' THEN
+			CASE (c_sort_by)
+			WHEN 'contoh_int' THEN contoh_int
+			WHEN 'contoh_double' THEN contoh_double
+			WHEN 'contoh_boolean' THEN contoh_boolean
+			WHEN 'contoh_string' THEN contoh_string
+			ELSE id END END DESC
+	 LIMIT currentIndex,c_size ;
+END

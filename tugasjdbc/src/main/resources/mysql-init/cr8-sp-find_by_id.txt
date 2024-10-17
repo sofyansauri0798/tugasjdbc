@@ -1,0 +1,17 @@
+DROP PROCEDURE IF EXISTS `sp_find_by_id`;
+CREATE DEFINER=`root`@`%` PROCEDURE `sp_find_by_id`(c_id INT)
+BEGIN
+DECLARE code CHAR(5) DEFAULT '00000';
+DECLARE err_no CHAR(5) DEFAULT '00000';
+DECLARE msg TEXT;
+DECLARE exit handler for SQLEXCEPTION
+ BEGIN
+	GET DIAGNOSTICS CONDITION 1
+        code = RETURNED_SQLSTATE, msg = MESSAGE_TEXT,err_no=MYSQL_ERRNO;
+				 ROLLBACK;
+	INSERT INTO log_error(sql_state,err_msg,err_no,created_by,created_at,trx,fx_name) VALUES (code,msg,err_no,1,CURRENT_TIMESTAMP,'SP','sp_add_mst_contoh');
+ END;
+
+	SELECT * FROM mst_contoh WHERE id = c_id;
+
+END

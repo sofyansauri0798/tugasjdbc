@@ -1,0 +1,12 @@
+DROP TABLE log_error;
+CREATE TABLE log_error (
+  statex varchar ,
+  msg varchar ,
+  trx bpchar ,
+  namex bpchar ,
+  created_by int8,
+  created_at timestamp
+);
+
+ALTER TABLE public.log_error
+  OWNER TO postgres;

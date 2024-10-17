@@ -1,0 +1,14 @@
+CREATE TABLE mst_contoh (
+  id SERIAL PRIMARY KEY,
+  contoh_int bigint,
+  contoh_double decimal,
+  contoh_string TEXT ,
+  contoh_float real,
+  contoh_date date,
+  contoh_boolean bool
+);
+
+ALTER TABLE mst_contoh
+  OWNER TO postgres;
+
+COMMENT ON COLUMN mst_contoh.id IS 'id-identity';

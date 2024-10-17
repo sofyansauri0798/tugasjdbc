@@ -1,0 +1,25 @@
+DROP PROCEDURE IF EXISTS `sp_update_mst_contoh`;
+CREATE DEFINER=`root`@`%` PROCEDURE `sp_update_mst_contoh`(
+c_int INT,
+c_double DOUBLE,
+c_string CHAR(255),
+c_float DOUBLE,
+c_boolean BOOL,
+c_date DATE,
+c_id INT
+)
+BEGIN
+DECLARE code CHAR(5) DEFAULT '00000';
+DECLARE err_no CHAR(5) DEFAULT '00000';
+DECLARE msg TEXT;
+DECLARE exit handler for SQLEXCEPTION
+ BEGIN
+	GET DIAGNOSTICS CONDITION 1
+        code = RETURNED_SQLSTATE, msg = MESSAGE_TEXT,err_no=MYSQL_ERRNO;
+				 ROLLBACK;
+	INSERT INTO log_error(sql_state,err_msg,err_no,created_by,created_at,trx,fx_name) VALUES (code,msg,err_no,1,CURRENT_TIMESTAMP,'SP','sp_update_mst_contoh');
+ END;
+
+ UPDATE mst_contoh SET contoh_int = c_int , contoh_double = c_double, contoh_float=c_float,contoh_boolean=contoh_boolean,contoh_string=c_string,
+ contoh_date=c_date WHERE id = c_id;
+END

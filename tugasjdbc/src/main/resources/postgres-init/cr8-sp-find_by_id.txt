@@ -1,0 +1,12 @@
+DROP FUNCTION
+IF
+	EXISTS sp_find_by_id;
+CREATE
+	OR REPLACE FUNCTION sp_find_by_id ( c_id INT) RETURNS SETOF mst_contoh AS $$ BEGIN
+		RETURN QUERY
+	SELECT
+		*
+	FROM
+		mst_contoh
+	WHERE id = c_id;
+	END; $$ LANGUAGE 'plpgsql';

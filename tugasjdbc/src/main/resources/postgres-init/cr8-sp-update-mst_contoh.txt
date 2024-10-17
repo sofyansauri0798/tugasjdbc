@@ -1,0 +1,21 @@
+-- SELECT prosrc FROM pg_proc WHERE proname = 'sp_update_mst_contoh';
+DROP PROCEDURE IF EXISTS sp_update_mst_contoh ;
+CREATE OR REPLACE PROCEDURE sp_update_mst_contoh(
+   c_int int4,
+   c_double float8,
+   c_string text,
+   c_float float4,
+   c_boolean bool,
+   c_date date,
+	 c_id int8
+)
+as $$
+BEGIN
+		UPDATE mst_contoh SET contoh_int = c_int , contoh_double = c_double, contoh_float=c_float,contoh_boolean=contoh_boolean,contoh_string=c_string,
+ contoh_date=c_date WHERE id = c_id;
+
+				exception when others then
+    RAISE INFO 'Error Name:%',SQLERRM;
+    RAISE INFO 'Error State:%', SQLSTATE;
+				INSERT INTO log_error(statex,msg,trx,namex,created_by,created_at) VALUES(SQLSTATE,SQLERRM,'sp','sp_update_mst_contoh',1,CURRENT_TIMESTAMP);END;
+$$ LANGUAGE plpgsql;
